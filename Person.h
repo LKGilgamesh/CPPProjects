@@ -1,3 +1,4 @@
+
 #ifndef PERSON_H
 #define PERSON_H
 
@@ -8,7 +9,7 @@ class Person
 {
 public:
 	Person(string first, string last, int age, int friendCap);
-    Person();
+	Person();
 	~Person();
 
 	bool add(Person* p);
@@ -25,15 +26,16 @@ public:
 
 
 	/*
-	 * Define any desired "helper functions" here.
-	 */
+	* Define any desired "helper functions" here.
+	*/
 
 private:
-    string first, last;
-    int age, friendCap;
+	string first, last;
+	int age, friendCap;
+	Person **friendList;
 	/*
-	 * Define any necessary fields here.
-	 */
+	* Define any necessary fields here.
+	*/
 };
 
 #endif // PERSON_H
