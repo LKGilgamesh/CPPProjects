@@ -13,7 +13,13 @@ Person::Person()
 	last = "Doe";
 	age = 0;
 	friendCap = 0;
-	friendList = new Person*[friendCap];	
+	friendList = new Person*[friendCap];
+
+	for (int i = 0; i < friendCap; i++)
+    {
+        friendList[i] = NULL;
+    }
+    //this is done.
 }
 
 Person::Person(string first, string last, int age, int friendCap)
@@ -23,18 +29,24 @@ Person::Person(string first, string last, int age, int friendCap)
 	this->age = age;
 	this->friendCap = friendCap;
 	friendList = new Person*[friendCap];
-	
+
 	for (int i = 0; i < friendCap; i++)
 	{
 		friendList[i] = NULL;
 	}
-	
+    //this is done
+}
+Person::~Person()
+{
+    //i need to find out how to do this.
+    delete(friendList);
 }
 string Person::toSimpleString()
 {
 	ostringstream ss;
 	ss << first << " " << last << ", Age" << age;
 	return ss.str();
+	//this is done
 }
 
 bool Person::add(Person * p)
@@ -62,22 +74,16 @@ bool Person::add(Person * p)
 }
 string Person::toFullString()
 {
-	/*
-	string allFriends;
-	for(int i = 0; i< friendCap; i++)
-	{
-	allFriends += "\t" + friendList[i]->toSimpleString() + "\n";
-	}
-	string str = toSimpleString() +
-	"\n Friends:"
-	"\n" + allFriends;
-	
-	THIS ISNT DONE YET.
-	*/
-	ostringstream fs;
-	fs << first << " " << last << ", Age" << age;
-	return fs.str();
+	string fs = toSimpleString();
 
+	ostringstream ffs;
+	ffs << fs << "\n Friends: \n";
+    for(int i = 0; i< friendCap; i++)
+	{
+       ffs << "\t" << friendList[i]->toSimpleString() << "\n";
+	}
+	//this may work, will need to test.
+	return ffs.str();
 }
 string Person::getFirstName()
 {
@@ -121,6 +127,15 @@ bool Person::isCapped()
 
 Person** Person::getUncappedFriends(int &size)
 {
+    int unCappedSize;
+    Person** uncappedFriendList;
+    for(int i = 0;i < friendCap;i++)
+    {
+        if(friendList[i]->isCapped() == false)
+        {
+            uncappedSize++;
 
+        }
 
+    }
 }
