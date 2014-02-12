@@ -3,9 +3,8 @@
 #include "Person.h"
 #include <iostream>
 #include <sstream>
+
 using namespace std;
-
-
 
 Person::Person()
 {
@@ -22,12 +21,12 @@ Person::Person()
     //this is done.
 }
 
-Person::Person(string first, string last, int age, int friendCap)
+Person::Person(string first1, string last1, int age1, int friendCap1)
 {
-	this->first = first;
-	this->last = last;
-	this->age = age;
-	this->friendCap = friendCap;
+	first = first1;
+	last = last1;
+	age = age1;
+	friendCap = friendCap1;
 	friendList = new Person*[friendCap];
 
 	for (int i = 0; i < friendCap; i++)
@@ -43,7 +42,7 @@ Person::~Person()
 }
 string Person::toSimpleString()
 {
-	ostringstream ss;
+    ostringstream ss;
 	ss << first << " " << last << ", Age" << age;
 	return ss.str();
 	//this is done
@@ -74,16 +73,17 @@ bool Person::add(Person * p)
 }
 string Person::toFullString()
 {
-	string fs = toSimpleString();
+	string fs1 = toSimpleString();
+	string fs2 = "\n Friends: \n";
+    string ffs = fs1 + fs2;
 
-	ostringstream ffs;
-	ffs << fs << "\n Friends: \n";
     for(int i = 0; i< friendCap; i++)
 	{
-       ffs << "\t" << friendList[i]->toSimpleString() << "\n";
+        ffs += string("\t") + friendList[i]->toSimpleString() + string("\n");
 	}
+
 	//this may work, will need to test.
-	return ffs.str();
+	return ffs;
 }
 string Person::getFirstName()
 {
@@ -128,14 +128,24 @@ bool Person::isCapped()
 Person** Person::getUncappedFriends(int &size)
 {
     int unCappedSize;
-    Person** uncappedFriendList;
+    int index;
+    Person** unCappedFriendList;
     for(int i = 0;i < friendCap;i++)
     {
         if(friendList[i]->isCapped() == false)
         {
-            uncappedSize++;
-
+            unCappedSize++;
         }
-
     }
+    unCappedFriendList = new Person*[unCappedSize];
+
+    for(int j = 0;j < friendCap; j++)
+    {
+        if(friendList[j]->isCapped() == false)
+        {
+            unCappedFriendList[index] = friendList[j];
+            index++;
+        }
+    }
+    return unCappedFriendList;
 }
