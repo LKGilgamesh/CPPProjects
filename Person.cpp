@@ -15,35 +15,46 @@ Person::Person()
 	friendList = new Person*[friendCap];
 
 	for (int i = 0; i < friendCap; i++)
-    {
-        friendList[i] = NULL;
-    }
-    //this is done.
+	{
+		friendList[i] = NULL;
+	}
+	numOfFriends = 0;
+	//this is done.
 }
 
-Person::Person(string first1, string last1, int age1, int friendCap1)
+Person::Person(string first, string last, int age, int friendCap)
 {
-	first = first1;
-	last = last1;
-	age = age1;
-	friendCap = friendCap1;
+	this->first = first;
+	this->last = last;
+	
+	if (age <= 0)
+	{
+		throw out_of_range("Age can't be 0 or negative");
+	}
+	this->age = age;
+
+	if (friendCap < 0)
+	{
+		throw out_of_range("friendCap can't be negative");
+	}
+
+	this->friendCap = friendCap;
 	friendList = new Person*[friendCap];
 
 	for (int i = 0; i < friendCap; i++)
 	{
 		friendList[i] = NULL;
 	}
-    //this is done
+	numOfFriends = 0;
+	//this is done
 }
-Person::~Person()
-{
-    //i need to find out how to do this.
-    delete(friendList);
-}
+
+Person::~Person(){};
+
 string Person::toSimpleString()
 {
-    ostringstream ss;
-	ss << first << " " << last << ", Age" << age;
+	ostringstream ss;
+	ss << "<" << first << "> <" << last << ">, Age <" << age << ">";
 	return ss.str();
 	//this is done
 }
@@ -60,26 +71,26 @@ bool Person::add(Person * p)
 			if (friendList[i] == NULL)
 			{
 				friendList[i] = p;
+				i = friendCap;
+				numOfFriends++;
 				return true;
-			}
-			else
-			{
-				return false; //get back to this, it needs exception handling.
 			}
 		}
 	}
-	cout << "it shouldn't have made it this far;";
 	return false;
 }
 string Person::toFullString()
 {
 	string fs1 = toSimpleString();
 	string fs2 = "\n Friends: \n";
-    string ffs = fs1 + fs2;
+	string ffs = fs1 + fs2;
 
-    for(int i = 0; i< friendCap; i++)
+	for (int i = 0; i< friendCap; i++)
 	{
-        ffs += string("\t") + friendList[i]->toSimpleString() + string("\n");
+		if (friendList[i] != NULL)
+		{
+			ffs += string("\t") + friendList[i]->toSimpleString() + string("\n");
+		}
 	}
 
 	//this may work, will need to test.
@@ -104,7 +115,7 @@ int Person::getFriendCap()
 
 Person** Person::getFriendList(int &size)
 {
-	size = friendCap;
+	size = numOfFriends;
 	return friendList;
 
 }
@@ -117,35 +128,37 @@ bool Person::isCapped()
 			i = friendCap;
 			return false;
 		}
-		else{
-			return true;
-		}
 	}
-	cout << "it should not have made it this far";
-	return false;
+	//cout << "it should not have made it this far";
+	return true;
 }
 
 Person** Person::getUncappedFriends(int &size)
 {
-    int unCappedSize;
-    int index;
-    Person** unCappedFriendList;
-    for(int i = 0;i < friendCap;i++)
-    {
-        if(friendList[i]->isCapped() == false)
-        {
-            unCappedSize++;
-        }
-    }
-    unCappedFriendList = new Person*[unCappedSize];
+	int index = 0; //will give the size of the new array
+	int location = 0; //will determine the location of the array as Persons are put into it
+	Person** unCappedFriendList;
+	for (int i = 0; i < friendCap; i++)
+	{
+		if (friendList[i] != NULL && friendList[i]->isCapped() == false)
+		{
+			index++;
+		}
+	}
+	unCappedFriendList = new Person*[index];
+	for (int k = 0; k < friendCap; k++)
+	{
+		unCappedFriendList[k] = NULL;
+	}
+	for (int j = 0; j < friendCap; j++)
+	{
+		if (friendList[j] != NULL && friendList[j]->isCapped() == false)
+		{
+			unCappedFriendList[location] = friendList[j];
+			location++;
+		}
 
-    for(int j = 0;j < friendCap; j++)
-    {
-        if(friendList[j]->isCapped() == false)
-        {
-            unCappedFriendList[index] = friendList[j];
-            index++;
-        }
-    }
-    return unCappedFriendList;
+	}
+	size = index;
+	return unCappedFriendList;
 }
