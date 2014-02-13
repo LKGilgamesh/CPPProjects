@@ -1,4 +1,3 @@
-
 #ifndef PERSON_H
 #define PERSON_H
 
@@ -31,11 +30,11 @@ public:
 
 private:
 	string first, last;
-	int age, friendCap;
+	int age, friendCap, numOfFriends;
 	Person **friendList;
 	/*
 	* Define any necessary fields here.
 	*/
 };
 
-#endif // PERSON_H
+#endif // P
