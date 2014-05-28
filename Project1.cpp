@@ -15,10 +15,12 @@ int main(){
 	int select=20;
 
 	while (select != 0){
-		std::cout << "0. exit\n1. input file\n2. union file\n3. subtract file\n4. difference file\n" <<
-			"5. intersect file\n6. reset to empty set\n7. output file\n8. print set\n9. find\n" <<
-			"10. insert\n11. delete\n12. verbose output\n13. normal output\n14. silent output\n15. help\n" << std::endl;
 		std::cin >> select;
+		std::cout << "0 - exit; 1 - input <file>; 2 - union <file>; 3 - subtract <file>;\n" <<
+					 "4 - difference <file>; 5 - intersect <file>; 6 - reset current set;\n" <<
+					 "7 - write <file>; 8 - print; 9 - find <item>; 10 - insert <item>;\n" << 
+					 "11 - delete <item>; 12 - verbose; 13 - normal; 14 - silent; 15 - help\n" << endl;
+
 		if (select == 0){
 			std::cout << "Goodbye." << std::endl;
 		}
@@ -110,26 +112,48 @@ int main(){
 			for (std::set<std::string>::iterator it = set1.begin(); it != set1.end(); ++it)
 				std::cout << *it << std::endl;
 		}
-		else if (select == 9){		
+		else if (select == 9){		//find item in set.
+			std::string tempString
+			std::cout << "Enter the name of the string. -- ";
+			std::cin >> tempString;
+			if(set1.find(tempString) != set1.end()){
+				std::cout << "'" << tempStrstd::string tempString
+			std::cout << "Enter the name of the string. -- ";
+			std::cin >> tempString;ing << "' " << "was found";
+			}
+			else{
+				std::cout << "'" << tempString << "' " << "was not found";
+			}
+		}
+		else if (select == 10){		//add item to set.
+			std::string tempString
+			std::cout << "Enter the name of the string. -- ";
+			std::cin >> tempString;
+			set1.insert(tempString);
+		}
+		else if (select == 11){		//delete item from set.
+			std::string tempString
+			std::cout << "Enter the name of the string. -- ";
+			std::cin >> tempString;
+			if(set1.find(tempString) != set1.end()){
+				set1.erase(set1.find(tempString));
+
+			}
+		}
+		else if (select == 12){		//verbose mode
 
 		}
-		else if (select == 10){
+		else if (select == 13){		//normal mode
 
 		}
-		else if (select == 11){
+		else if (select == 14){		//silent mode
 
 		}
-		else if (select == 12){
-
-		}
-		else if (select == 13){
-
-		}
-		else if (select == 14){
-
-		}
-		else if (select == 15){
-
+		else if (select == 15){		//print to screen the help.
+			std::cout << "0. exit\n1. input file\n2. union file\n3. subtract file\n4. difference file\n" <<
+			"5. intersect file\n6. reset to empty set\n7. output file\n8. print set\n9. find\n" <<
+			"10. insert\n11. delete\n12. verbose output\n13. normal output\n14. silent output\n15. help\n" << std::endl;
+		
 		}
 	}
 	return 0;
