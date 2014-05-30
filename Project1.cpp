@@ -34,7 +34,7 @@ int SetIO::findInSet(std::string &str){
 	}
 	return pos;
 }
-void SetIO::clearSet(){
+void SetIO::clearSet(){		
 	for (int i = 0; i < 100; i++){
 		setList[i] = "";
 	}
@@ -281,3 +281,8 @@ int main(){
 	}
 	return 0;
 };
+
+/*NOTE:
+	This program is not capable of handling having a set with more than 100 items, and will not reorganize items (and therefore lower the counter) even if items are removed. The only way to deal with this
+	is to use setIO.clearSet(), which will remove all of the items and reset the counter to zero.
+*/
