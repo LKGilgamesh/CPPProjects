@@ -12,9 +12,6 @@ std::ofstream output;
 
 SetIO::SetIO(){
 	counter = 0;
-	for (int i = 0; i < 100; i++){
-		setList[i] = "";
-	}
 }
 void SetIO::addToSet(std::string &str, int &number){
 	if (findInSet(str) == -1){
@@ -48,8 +45,8 @@ void SetIO::printList(){
 	}
 }
 void SetIO::openI(std::string &name){
-	name = "./" + name + ".txt";
-	input.open(name.c_str());
+	std::string tempName = "./" + name + ".txt";
+	input.open(tempName.c_str());
 	if (input.fail())
 		std::cout << "Unable to open file: " << name << std::endl;
 }
@@ -65,9 +62,6 @@ void SetIO::obtainLine(std::string &item, int &count){
 	std::istringstream record(tempString);
 	record >> item >> count;
 	bool read_fail = false;
-	if (read_fail = record.fail()){
-		std::cout << "line failure" << std::endl;
-	}
 	record >> tempString;
 	if (!record.eof()){
 		std::cout << "line malformed" << std::endl;
@@ -80,7 +74,7 @@ void SetIO::allToSets(std::string &name){
 	openI(name);
 	std::string item;
 	int count;
-	while (!input.eof){
+	while (!input.eof()){
 		count = 1;
 		item = "";
 		obtainLine(item, count);
@@ -92,7 +86,7 @@ void SetIO::unionToSets(std::string &name){
 	openI(name);
 	std::string item;
 	int count;
-	while (!input.eof){
+	while (!input.eof()){
 		count = 1;
 		item = "";
 		obtainLine(item, count);
@@ -113,7 +107,7 @@ void SetIO::subtractFromSets(std::string &name){
 	openI(name);
 	std::string item;
 	int count;
-	while (!input.eof){
+	while (!input.eof()){
 		count = 1;
 		item = "";
 		obtainLine(item, count);
@@ -133,7 +127,7 @@ void SetIO::differenceFromSets(std::string &name){
 	openI(name);
 	std::string item;
 	int count;
-	while (!input.eof){
+	while (!input.eof()){
 		count = 1;
 		item = "";
 		obtainLine(item, count);
@@ -157,11 +151,11 @@ void SetIO::intersectionFromSets(std::string &name){
 	openI(name);
 	std::string item;
 	int count;
-	int tempCounter = counter;
+	int tempCounter = counter - 1;
 	bool found;
-	for (int i = tempCounter; i > 0; i--){
+	for (int i = tempCounter; i >= 0; i--){
 		found = false;
-		while (!input.eof){
+		while (!input.eof()){
 			count = 1;
 			item = "";
 			obtainLine(item, count);
@@ -182,9 +176,9 @@ void SetIO::intersectionFromSets(std::string &name){
 void SetIO::outputSet(std::string &name){
 	std::string tempString = name + ".txt";
 	output.open(tempString.c_str());
-	for (int i = 0; i <= counter; i++){
+	for (int i = 0; i < counter; i++){
 		output << setList[i] << " " << setCount[i] << std::endl;
-	}g
+	}
 	output.close();
 	output.clear();
 }
