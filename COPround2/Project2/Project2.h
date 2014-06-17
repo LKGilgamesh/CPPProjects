@@ -32,6 +32,7 @@ public:
 	void insertItem(std::string &item, int &count);
 	int deleteItem(std::string &item);
 	int reduceItem(std::string &item,int &count);
+	void help();
 };
 
 #endif // P

@@ -3,9 +3,9 @@
 #include <iostream>
 #include <sstream>
 
-int main(){
-	bool VERBOSE = true;
-	bool NORMAL = false;
+int main( int argc, char *argv[] ){
+	bool VERBOSE = false;
+	bool NORMAL = true;
 	bool SILENT = false;
 
 	std::string stringFile;
@@ -17,7 +17,25 @@ int main(){
 	char b = 'A';
 	int c = a;
 	int d = b;
-	
+	bool fromCLine = false;
+	for(int i = 0;i < argc; i++){
+		if(argv[i] == "-s"){
+			SILENT = true;
+			NORMAL = false;
+		}
+		if(argv[i] == "-v"){
+			VERBOSE = true;
+			NORMAL = false;
+		}
+		if(argv[i] == "-h"){
+			setIO.help();
+		}
+		if(argv[i] == "-f"){
+			stringFile = argv[i+1];
+
+			fromCLine = true;
+		}
+	}
 	while (select != 0){
 		if (VERBOSE){
 			std::cout << "0 - exit; 1 - input <file>; 2 - union <file>; 3 - subtract <file>;\n" <<
@@ -28,30 +46,33 @@ int main(){
 		if (!SILENT){
 			std::cout << "> ";
 		}
+		if(fromCLine == false){
+			getline(std::cin, line);
+			std::istringstream record(line);
 
-		getline(std::cin, line);
-		std::istringstream record(line);
-
-		record >> select;
-		if (!record.eof()){
-			record >> stringFile;
-			int check = stringFile.at(0);
-			if (check <= 57){
-				select = std::stoi(stringFile);
-				if (!record.eof())
-					record >> stringFile;
-
-			}
+			record >> select;
 			if (!record.eof()){
-				record >> number;
-				if (record.fail()){
-					std::cerr << "Item <stringFile><count> is not in correct format on user input line" << std::endl;
-					select = 16;
-				}
-			}
+				record >> stringFile;
+				int check = stringFile.at(0);
+				if (check <= 57){
+					select = std::stoi(stringFile.c_str());
+					if (!record.eof())
+						record >> stringFile;
 
+				}
+				if (!record.eof()){
+					record >> number;
+					if (record.fail()){
+						std::cerr << "Item <stringFile><count> is not in correct format on user input line" << std::endl;
+						select = 16;
+					}
+				}
+
+			}
+			line = "";
 		}
-		line = "";
+		else
+			fromCLine = false;
 		if (select > 15 || select < 0 || select == 20){
 			std::cerr << "Command is invalid" << std::endl;		//NUMBER 4 ERROR
 		}
@@ -156,25 +177,7 @@ int main(){
 			NORMAL = false;
 		}
 		else if (select == 16){		//print to screen the help.
-			std::cout << 
-				"== == == == == == == == == == == == == == == == == == == == == == == == == == ==\n" <<
-				"Usage: proj2 [-s][-v][-h][-f <filename>]\n" <<
-				"		 -s: silent mode\n" <<
-				"		 -v: verbose mode\n" <<
-				"		 -h: print this help\n" <<
-				"		 -f <filename>: read <filename> into the current set\n" <<
-				"== == == == == == == == == == == == == == == == == == == == == == == == == == ==\n" <<
-				"The numbered commands are as follows :\n0. exit\n1. input file <filename> : open and read a list from a file to the current list\n" <<
-				"2. union file <filename> : open and union a multiset from a file with the current multiset" <<
-				"3. subtract file <filename> : open and subtract multiset from a file from the current multiset\n" <<
-				"4. difference file <filename> : open and find the difference between a multiset from a file and the current multiset\n" <<
-				"5. intersect file <filename> : open and find the intersection between a multiset from a file and the current multiset\n" <<
-				"6. reset current multiset to the empty multiset\n7. output file <filename> : open and write the current multiset to a file\n" <<
-				"8. print current multiset to the console\n9. find <item name> : test if <item name> is in the current multiset\n" <<
-				"10. insert <item name> <count>: add <item name> and <count> to the current multiset if it is not already in it\n11. delete <item name> : remove <item name> from the current multiset if it is in it\n" <<
-				"12. reduce <item name> <count>: reduce the number of <item name> in the current multiset by <count> if it is in it\n13.verbose output\n14. normal output\n15. silent output\n16. help\n" <<
-				"== == == == == == == == == == == == == == == == == == == == == == == == == == ==" << std::endl;
-
+			setIO.help();
 		}
 	}
 	return 0;

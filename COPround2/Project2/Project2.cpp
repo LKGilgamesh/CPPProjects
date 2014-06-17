@@ -277,5 +277,25 @@ int SetIO::reduceItem(std::string &item, int &count){
 		
 }
 
+void SetIO::help(){
+				std::cout << 
+				"== == == == == == == == == == == == == == == == == == == == == == == == == == ==\n" <<
+				"Usage: proj2 [-s][-v][-h][-f <filename>]\n" <<
+				"		 -s: silent mode\n" <<
+				"		 -v: verbose mode\n" <<
+				"		 -h: print this help\n" <<
+				"		 -f <filename>: read <filename> into the current set\n" <<
+				"== == == == == == == == == == == == == == == == == == == == == == == == == == ==\n" <<
+				"The numbered commands are as follows :\n0. exit\n1. input file <filename> : open and read a list from a file to the current list\n" <<
+				"2. union file <filename> : open and union a multiset from a file with the current multiset" <<
+				"3. subtract file <filename> : open and subtract multiset from a file from the current multiset\n" <<
+				"4. difference file <filename> : open and find the difference between a multiset from a file and the current multiset\n" <<
+				"5. intersect file <filename> : open and find the intersection between a multiset from a file and the current multiset\n" <<
+				"6. reset current multiset to the empty multiset\n7. output file <filename> : open and write the current multiset to a file\n" <<
+				"8. print current multiset to the console\n9. find <item name> : test if <item name> is in the current multiset\n" <<
+				"10. insert <item name> <count>: add <item name> and <count> to the current multiset if it is not already in it\n11. delete <item name> : remove <item name> from the current multiset if it is in it\n" <<
+				"12. reduce <item name> <count>: reduce the number of <item name> in the current multiset by <count> if it is in it\n13.verbose output\n14. normal output\n15. silent output\n16. help\n" <<
+				"== == == == == == == == == == == == == == == == == == == == == == == == == == ==" << std::endl;
 
+}
 
