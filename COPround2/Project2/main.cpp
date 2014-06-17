@@ -11,29 +11,43 @@ int main( int argc, char *argv[] ){
 	std::string stringFile;
 	int select = 20;
 	int number = 1;
-	std::string line;
+	std::string line = "";
 	SetIO setIO;
-	char a = '9';
-	char b = 'A';
-	int c = a;
-	int d = b;
-	bool fromCLine = false;
 	for(int i = 0;i < argc; i++){
-		if(argv[i] == "-s"){
-			SILENT = true;
-			NORMAL = false;
-		}
-		if(argv[i] == "-v"){
-			VERBOSE = true;
-			NORMAL = false;
-		}
-		if(argv[i] == "-h"){
-			setIO.help();
-		}
-		if(argv[i] == "-f"){
-			stringFile = argv[i+1];
+		line += argv[i];
+		line += " ";
+	}
+	if (line != ""){
+		std::istringstream ss(line);
+		line = "";
+		while (!ss.eof()){
+			ss >> line;
+			if (line == "-s"){
+				SILENT = true;
+				NORMAL = false;
+			}
+			else if (line == "-v"){
+				VERBOSE = true;
+				NORMAL = false;
+			}
+			else if (line == "-h"){
+				setIO.help();
+			}
+			else if (line == "-f"){
+				ss >> line;
+				int result = setIO.allToSets(line, VERBOSE);
+				if (!SILENT && result == 0){
 
-			fromCLine = true;
+					std::cout << "New set loaded ";
+					if (VERBOSE)
+						std::cout << "from " << line << std::endl;
+					else
+						std::cout << std::endl;
+				}
+				else if (result == 1)
+					std::cout << "Unable to open file: " << stringFile << std::endl;
+			}
+			line = "";
 		}
 	}
 	while (select != 0){
@@ -46,7 +60,7 @@ int main( int argc, char *argv[] ){
 		if (!SILENT){
 			std::cout << "> ";
 		}
-		if(fromCLine == false){
+		
 			getline(std::cin, line);
 			std::istringstream record(line);
 
@@ -70,9 +84,7 @@ int main( int argc, char *argv[] ){
 
 			}
 			line = "";
-		}
-		else
-			fromCLine = false;
+		
 		if (select > 15 || select < 0 || select == 20){
 			std::cerr << "Command is invalid" << std::endl;		//NUMBER 4 ERROR
 		}
@@ -81,34 +93,39 @@ int main( int argc, char *argv[] ){
 		else if (select == 1){		//input a file
 			int result = setIO.allToSets(stringFile,VERBOSE);
 			if (!SILENT && result == 0){
-				
+
 				std::cout << "New set loaded ";
 				if (VERBOSE)
 					std::cout << "from " << stringFile << std::endl;
 				else
 					std::cout << std::endl;
 			}
-			
+
 		}
 		else if (select == 2){		//union of two files into a set
-			
-			if (!SILENT && setIO.unionToSets(stringFile, VERBOSE) == 0)
+			int result = setIO.unionToSets(stringFile, VERBOSE);
+			if (!SILENT && result == 0)
 				std::cout << stringFile << " union completed" << std::endl;
 		}
 		else if (select == 3){		//subtraction of file from current set
-			if (!SILENT && setIO.subtractFromSets(stringFile, VERBOSE) == 0)
+			int result = setIO.subtractFromSets(stringFile, VERBOSE);
+			if (!SILENT && result == 0)
 				std::cout << stringFile << " subtraction completed" << std::endl;
+
+				
 		}
 		else if (select == 4){		//difference of file and set
-			
-			if (!SILENT && setIO.differenceFromSets(stringFile, VERBOSE) == 0)
+			int result = setIO.differenceFromSets(stringFile, VERBOSE);
+			if (!SILENT && result == 0)
 				std::cout << stringFile << " difference completed" << std::endl;
+
 
 		}
 		else if (select == 5){		//intersection of file and set
-			
-			if (!SILENT && setIO.intersectionFromSets(stringFile, VERBOSE) == 0)
+			int result = setIO.intersectionFromSets(stringFile, VERBOSE);
+			if (!SILENT && result == 0)
 				std::cout << stringFile << " intersection completed" << std::endl;
+
 		}
 		else if (select == 6){		//reset set
 			setIO.clearSet();

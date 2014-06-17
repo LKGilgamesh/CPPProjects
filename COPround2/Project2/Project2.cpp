@@ -242,6 +242,7 @@ void SetIO::insertItem(std::string &item, int &count){
 	}
 	else {
 		setCount[index] += count;
+		count = setCount[index];
 	}
 
 }
