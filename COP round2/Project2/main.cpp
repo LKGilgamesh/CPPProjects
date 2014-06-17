@@ -13,6 +13,11 @@ int main(){
 	int number = 1;
 	std::string line;
 	SetIO setIO;
+	char a = '9';
+	char b = 'A';
+	int c = a;
+	int d = b;
+	
 	while (select != 0){
 		if (VERBOSE){
 			std::cout << "0 - exit; 1 - input <file>; 2 - union <file>; 3 - subtract <file>;\n" <<
@@ -24,57 +29,64 @@ int main(){
 			std::cout << "> ";
 		}
 
-		
-		std::cin >> select;
-		if (std::cin.fail()){
-			std::cin.clear();
-			std::cin.ignore();
-			std::cout << "Int Exception!" << std::endl;
-		}
+		getline(std::cin, line);
+		std::istringstream record(line);
 
-		if (select == 1 || select == 2 || select == 3 || select == 4 || select == 5 || select == 7 || select == 9|| select == 11){
-			std::cin >> stringFile;
+		record >> select;
+		if (!record.eof()){
+			record >> stringFile;
+			int check = stringFile.at(0);
+			if (check <= 57){
+				select = std::stoi(stringFile);
+				if (!record.eof())
+					record >> stringFile;
 
-		}
-		else if (select == 6 || select == 8 || select == 13 || select == 14 || select == 15 || select == 16 || select == 0){}
-		else if (select == 10 || select == 12){
-			std::cin >> stringFile >> number;
-			if (std::cin.fail()){
-				std::cin.clear();
-				std::cin.ignore();
-				std::cout << "Int Exception!" << std::endl;
 			}
+			if (!record.eof()){
+				record >> number;
+				if (record.fail()){
+					std::cerr << "Item <stringFile><count> is not in correct format on user input line" << std::endl;
+					select = 16;
+				}
+			}
+
 		}
-		else if (select > 15 || select < 0 || select == 20){
-			std::cout << "Command is invalid" << std::endl;
+		line = "";
+		if (select > 15 || select < 0 || select == 20){
+			std::cerr << "Command is invalid" << std::endl;		//NUMBER 4 ERROR
 		}
 		
 		if (select == 0){}
 		else if (select == 1){		//input a file
-			setIO.allToSets(stringFile);
-			if (!SILENT)
-				std::cout << "New set loaded" << std::endl;
-
+			int result = setIO.allToSets(stringFile,VERBOSE);
+			if (!SILENT && result == 0){
+				
+				std::cout << "New set loaded ";
+				if (VERBOSE)
+					std::cout << "from " << stringFile << std::endl;
+				else
+					std::cout << std::endl;
+			}
+			
 		}
 		else if (select == 2){		//union of two files into a set
-			setIO.unionToSets(stringFile);
-			if (!SILENT)
+			
+			if (!SILENT && setIO.unionToSets(stringFile, VERBOSE) == 0)
 				std::cout << stringFile << " union completed" << std::endl;
 		}
 		else if (select == 3){		//subtraction of file from current set
-			setIO.subtractFromSets(stringFile);
-			if (!SILENT)
+			if (!SILENT && setIO.subtractFromSets(stringFile, VERBOSE) == 0)
 				std::cout << stringFile << " subtraction completed" << std::endl;
 		}
 		else if (select == 4){		//difference of file and set
-			setIO.differenceFromSets(stringFile);
-			if (!SILENT)
+			
+			if (!SILENT && setIO.differenceFromSets(stringFile, VERBOSE) == 0)
 				std::cout << stringFile << " difference completed" << std::endl;
 
 		}
 		else if (select == 5){		//intersection of file and set
-			setIO.intersectionFromSets(stringFile);
-			if (!SILENT)
+			
+			if (!SILENT && setIO.intersectionFromSets(stringFile, VERBOSE) == 0)
 				std::cout << stringFile << " intersection completed" << std::endl;
 		}
 		else if (select == 6){		//reset set
@@ -83,11 +95,14 @@ int main(){
 				std::cout << "Reset completed" << std::endl;
 		}
 		else if (select == 7){		//output a set
-			setIO.outputSet(stringFile);
-			if (!SILENT)
+			
+			if (!SILENT && setIO.outputSet(stringFile) == 0)
 				std::cout << "save to " << stringFile << " completed" << std::endl;
+			else
+				std::cerr << "File " << stringFile << " doesn not exist or exists but cannot be opened in the desired mode." << std::endl;
 		}
 		else if (select == 8){		//print set
+			
 			if (!SILENT)
 				std::cout << "Current set:" << std::endl;
 
@@ -96,10 +111,12 @@ int main(){
 		}
 		else if (select == 9){		//find item in set
 			int count = 0;
-			setIO.findItem(stringFile, count);
-			if (!SILENT){
-				std::cout << "Item " << stringFile << " found with count " << number << std::endl;
+			int result = setIO.findItem(stringFile, count);
+			if (!SILENT && result == 0){
+				std::cout << "Item " << stringFile << " found with count " << count << std::endl;
 			}
+			else if (result == 1)
+				std::cout << "item " << stringFile << " not in set" << std::endl;
 				
 		}
 		else if (select == 10) {
@@ -108,14 +125,20 @@ int main(){
 				std::cout << "Item " << stringFile << " inserted with count " << number << std::endl;
 		}
 		else if (select == 11){
-			setIO.deleteItem(stringFile);
-			if (!SILENT)
+			int result = setIO.deleteItem(stringFile);
+			if (!SILENT && result == 0)
 				std::cout << "Item " << stringFile << " deleted" << std::endl;
+			else if (result == 1)
+				std::cout << "item " << stringFile << " not in multiset" << std::endl;
 		}
 		else if (select == 12){	//reduce item by count
-			setIO.reduceItem(stringFile, number);
-			if(!SILENT)
+			int result = setIO.reduceItem(stringFile, number);
+			if(!SILENT && result == 0)
 				std::cout << "Item " << stringFile << " count reduced to " << number << std::endl;
+			else if (!SILENT && result == 1)
+				std::cout << "item " << stringFile << " removed " << std::endl;
+			else if (result == 2)
+				std::cout << "item " << stringFile << " not in multiset" << std::endl;
 		}
 		else if (select == 13){		//verbose mode
 			VERBOSE = true;

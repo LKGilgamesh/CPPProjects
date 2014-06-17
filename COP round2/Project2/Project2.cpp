@@ -38,159 +38,201 @@ int SetIO::findInSet(std::string &str){
 void SetIO::clearSet(){
 	setList.clear();
 	setCount.clear();
+	counter = 0;
 }
 void SetIO::printList(){
-	for (int i = 0; i <= counter; i++){
-			std::cout << setList[i] << std::endl;
+	for (int i = 0; i < counter; i++){
+		std::cout << setList[i] << " " << setCount[i] << std::endl;
 	}
 }
 void SetIO::openI(std::string &name){
 	std::string tempName = "./" + name + ".txt";
 	input.open(tempName.c_str());
 	if (input.fail())
-		std::cout << "Unable to open file: " << name << std::endl;
+		std::cerr << "Unable to open file: " << name << std::endl;
 }
 
 void SetIO::closeI(){
 	input.close();
 	input.clear();
 }
-
-void SetIO::obtainLine(std::string &item, int &count){
+int SetIO::obtainLine(std::string &item, int &count, bool &mode){
 	std::string tempString;
-	getline(std::cin, tempString);
+	getline(input, tempString);
 	std::istringstream record(tempString);
 	record >> item >> count;
-	bool read_fail = false;
 	record >> tempString;
 	if (!record.eof()){
-		std::cout << "line malformed" << std::endl;
+		std::cerr << "File is not in correct format" << std::endl;
+		if (mode)
+			std::cout << "Line " << tempString << "is incorrect" << std::endl;
+		return 1;
 	}
 	tempString = "";
 	record.clear();
+	return 0;
 }
-void SetIO::allToSets(std::string &name){
+int SetIO::allToSets(std::string &name, bool &mode){
 	clearSet();
 	openI(name);
 	std::string item;
 	int count;
-	while (!input.eof()){
-		count = 1;
-		item = "";
-		obtainLine(item, count);
-		addToSet(item, count);
-	}
-	closeI();
-}
-void SetIO::unionToSets(std::string &name){
-	openI(name);
-	std::string item;
-	int count;
-	while (!input.eof()){
-		count = 1;
-		item = "";
-		obtainLine(item, count);
-		for (int i = 0; i < counter; i++){
-			if (item == setList[i]){
-				setCount[i] += count;
-				i = counter;
-				break;
-			}
-			else if (i + 1 == counter){
-				addToSet(item, count);
-			}
+	if (!input.fail()){
+		while (!input.eof()){
+			count = 1;
+			item = "";
+			obtainLine(item, count, mode);
+			addToSet(item, count);
 		}
+		closeI();
+		return 0;
 	}
-	closeI();
+	else{
+		return 1;
+	}
 }
-void SetIO::subtractFromSets(std::string &name){
+int SetIO::unionToSets(std::string &name, bool &mode){
 	openI(name);
 	std::string item;
 	int count;
-	while (!input.eof()){
-		count = 1;
-		item = "";
-		obtainLine(item, count);
-		for (int i = 0; i < counter; i++){
-			if (item == setList[i]){
-				setCount[i] -= count;
-				if (setCount[i] < 0){
-					rmFromSet(i);
+	if (!input.fail()){
+		while (!input.eof()){
+
+			count = 1;
+			item = "";
+			int result = obtainLine(item, count, mode);
+			if (result == 1)
+				break;
+			bool isThere = false;
+			for (int i = 0; i < counter; i++){
+				if (item == setList[i]){
+					setCount[i] += count;
+					i = counter;
+					isThere = true;
+					break;
+				}
+			}
+			if (isThere == false)
+				addToSet(item, count);
+		}
+		closeI();
+		return 0;
+	}
+	else
+		return 1;
+	
+}
+int SetIO::subtractFromSets(std::string &name, bool &mode){
+	openI(name);
+	std::string item;
+	int count;
+	if (!input.fail()){
+		while (!input.eof()){
+			count = 1;
+			item = "";
+			obtainLine(item, count, mode);
+			for (int i = 0; i < counter; i++){
+				if (item == setList[i]){
+					setCount[i] -= count;
+					if (setCount[i] <= 0){
+						rmFromSet(i);
+					}
 				}
 			}
 		}
+		closeI();
+		return 0;
 	}
-	closeI();
+	else
+		return 1;
 }
 
-void SetIO::differenceFromSets(std::string &name){
+int SetIO::differenceFromSets(std::string &name, bool &mode){
 	openI(name);
 	std::string item;
 	int count;
-	while (!input.eof()){
-		count = 1;
-		item = "";
-		obtainLine(item, count);
-		for (int i = 0; i < counter; i++){
-			if (item == setList[i]){
-				setCount[i] -= count;
-				if (setCount[i] < 0){
-					rmFromSet(i);
+	if (!input.fail()){
+		while (!input.eof()){
+			count = 1;
+			item = "";
+			obtainLine(item, count, mode);
+			bool isThere = false;
+			for (int i = 0; i < counter; i++){
+				if (item == setList[i]){
+					if (setCount[i] < count)
+						setCount[i] = count - setCount[1];
+					else if (setCount[i] > count)
+						setCount[i] = setCount[i] - count;
+					else
+						rmFromSet(i);
+					isThere = true;
+					break;
 				}
-				break;
 			}
-			else if (i + 1 == counter){
+			if (isThere == false)
 				addToSet(item, count);
-			}
 		}
+		closeI();
+		return 0;
 	}
-	closeI();
+	else
+		return 1;
 }
 
-void SetIO::intersectionFromSets(std::string &name){
+int SetIO::intersectionFromSets(std::string &name, bool &mode){
 	openI(name);
 	std::string item;
 	int count;
 	int tempCounter = counter - 1;
 	bool found;
-	for (int i = tempCounter; i >= 0; i--){
-		found = false;
-		while (!input.eof()){
-			count = 1;
-			item = "";
-			obtainLine(item, count);
-			if (item == setList[i]){
-				if (setCount[i] < count)
-					setCount[i] = count;
-				found = true;
+	if (!input.fail()){
+		for (int i = tempCounter; i >= 0; i--){
+			found = false;
+			while (!input.eof()){
+				count = 1;
+				item = "";
+				obtainLine(item, count, mode);
+				if (item == setList[i]){
+					if (setCount[i] > count)
+						setCount[i] = count;
+					found = true;
+				}
 			}
+			if (found == false){
+				rmFromSet(i);
+			}
+			input.clear();
+			input.seekg(0, std::ios::beg);
 		}
-		if (found == false){
-			rmFromSet(i);
-		}
-		input.clear();
-		input.seekg(0, std::ios::beg);
+		closeI();
+		return 0;
 	}
-	closeI();
+	return 1;
 }
-void SetIO::outputSet(std::string &name){
+int SetIO::outputSet(std::string &name){
 	std::string tempString = name + ".txt";
 	output.open(tempString.c_str());
-	for (int i = 0; i < counter; i++){
-		output << setList[i] << " " << setCount[i] << std::endl;
-	}
-	output.close();
-	output.clear();
-}
-
-void SetIO::findItem(std::string &item, int &count){
-	int index = findInSet(item);
-	if (index != -1){
-		count = index;
-		std::cout << "item " << item << " found with count " << setCount[index] << std::endl;
+	if (!output.fail()){
+		for (int i = 0; i < counter; i++){
+			output << setList[i] << " " << setCount[i] << std::endl;
+		}
+		output.close();
+		output.clear();
+		return 0;
 	}
 	else
-		std::cout << "item " << item << " not found" << std::endl; 
+		return 1;
+}
+
+int SetIO::findItem(std::string &item, int &count){
+	int index = findInSet(item);
+	if (index != -1){
+		count = setCount[index];
+		return 0;
+	}
+	else
+		return 1;
+
 }
 
 void SetIO::insertItem(std::string &item, int &count){
@@ -198,34 +240,41 @@ void SetIO::insertItem(std::string &item, int &count){
 	if (index == -1){
 		addToSet(item, count);
 	}
-	else
+	else {
 		setCount[index] += count;
+	}
+
 }
 
-void SetIO::deleteItem(std::string &item){
+int SetIO::deleteItem(std::string &item){
 	int index = findInSet(item);
 	if (index != -1){
 		rmFromSet(index);
-		std::cout << "item " << item << " deleted " << std::endl;
+		return 0;
 	}
 	else
-		std::cout << "item " << item << " not in multiset" << std::endl;
+		return 1;
+		
 }
 
-void SetIO::reduceItem(std::string &item, int &count){
+int SetIO::reduceItem(std::string &item, int &count){
 	int index = findInSet(item);
 	if (index != -1){
 		if (setCount[index] > count){
 			setCount[index] -= count;
-			std::cout << "item " << item << " reduced to " << setCount[index] << std::endl;
+			count = setCount[index];
+
+			return 0;
 		}
 		else{
 			rmFromSet(index);
-			std::cout << "item " << item << " deleted " << std::endl;
+			count = 0;
+			return 1;		
 		}
 	}
 	else
-		std::cout << "item " << item << " not in multiset" << std::endl;
+		return 2;
+		
 }
 
 

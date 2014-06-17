@@ -21,17 +21,17 @@ public:
 	void printList();
 	void openI(std::string &name);
 	void closeI();
-	void obtainLine(std::string &item,int &count);
-	void allToSets(std::string &name);
-	void unionToSets(std::string &name);
-	void subtractFromSets(std::string &name);
-	void differenceFromSets(std::string &name);
-	void intersectionFromSets(std::string &name);
-	void outputSet(std::string &name);
-	void findItem(std::string &item,int &count);
+	int obtainLine(std::string &item,int &count, bool &mode);
+	int allToSets(std::string &name, bool &mode);
+	int unionToSets(std::string &name, bool &mode);
+	int subtractFromSets(std::string &name, bool &mode);
+	int differenceFromSets(std::string &name, bool &mode);
+	int intersectionFromSets(std::string &name, bool &mode);
+	int outputSet(std::string &name);
+	int findItem(std::string &item,int &count);
 	void insertItem(std::string &item, int &count);
-	void deleteItem(std::string &item);
-	void reduceItem(std::string &item,int &count);
+	int deleteItem(std::string &item);
+	int reduceItem(std::string &item,int &count);
 };
 
 #endif // P
