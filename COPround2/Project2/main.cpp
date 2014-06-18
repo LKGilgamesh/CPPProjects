@@ -69,7 +69,9 @@ int main( int argc, char *argv[] ){
 				record >> stringFile;
 				int check = stringFile.at(0);
 				if (check <= 57){
-					select = std::stoi(stringFile.c_str());
+					std::istringstream ss2(stringFile);
+					ss2 >> select;
+				
 					if (!record.eof())
 						record >> stringFile;
 

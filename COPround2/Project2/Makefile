@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -c -std=c++11 -Wall
+CXXFLAGS = -c -Wall
 LDFLAGS = 
 
 all: Project2
