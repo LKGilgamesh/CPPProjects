@@ -74,7 +74,7 @@ void Node::remove(int sumval,Node *parent){
 		right->remove(sumval, right);
 	}
 	else if (data == sumval){
-		if (right == left == NULL){
+		if (right == NULL && left == NULL){
 			parent = NULL;
 			deleteNode();
 			
