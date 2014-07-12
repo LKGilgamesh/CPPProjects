@@ -93,6 +93,12 @@ void Node::remove(int sumval,Node *parent){
 				deleteNode();
 			}
 		}
+		else{
+			std::cout << "something went wrong at the conditions for right and left." << std::endl;
+		}
+	}
+	else{
+		std::cout << "something went wrong at the comparison part." << std::endl;
 	}
 }
 void Node::clearNodes(){
@@ -186,7 +192,8 @@ int BST::size(){
 		return sizeOfBST;
 }
 float BST::average(){
-	float average = (float)(sum() / size());
-	return average;
+	float sumV = (float) sum();
+	float sizeV = (float)size();
+	return sumV / sizeV;
 }
 
