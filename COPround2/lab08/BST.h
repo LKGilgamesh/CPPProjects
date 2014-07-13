@@ -13,7 +13,7 @@ private:
 	void print_inorder();
 	bool find(int sumval);
 	void print_from_value(int sumval);
-	void remove(int sumval,Node *parent);
+	bool remove(int sumval,Node *parent);
 	void deleteNode();
 	int findSuccessor();
 	void clearNodes();

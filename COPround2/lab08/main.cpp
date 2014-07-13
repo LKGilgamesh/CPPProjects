@@ -107,23 +107,25 @@ void test(BST * bst, int * nums, int n, int leaf, int root, int two, int one){
 }
 
 int main(){
+	
 	BST * bst = new BST();
 	int test1[] = { 6, 4, 5, 2, 8, 10 };
 	test(bst, test1, 6, 10, 6, 4, 5);
-
+	
 	BST * bst2 = new BST();
 	int test2[1] = { 5 };
 	test(bst2, test2, 1, 5, 5, 5, 5);
-
+	*/
 	BST * bst6 = new BST();
 	int test6[7] = { 8, 4, 2, 6, 12, 10, 14 };
 	test(bst6, test6, 7, 2, 8, 12, 4);
-
+	
 	BST * bst4 = new BST();
 	int test4[10] = { -2, 4, -6, 8, -10, 12, -14, 16, -18, 20 };
 	test(bst4, test4, 10, -2, 8, -6, 4);
-
+	
 	BST * bst5 = new BST();
 	int test5[20] = { 20, 18, 16, 14, 12, 10, 8, 6, 4, 2 };
 	test(bst5, test5, 10, 2, 20, 10, 12);
+	
 }
