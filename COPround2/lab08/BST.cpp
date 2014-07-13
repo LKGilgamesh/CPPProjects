@@ -66,13 +66,12 @@ void Node::print_from_value(int sumval){
 	if(right)
 		right->print_from_value(sumval);
 }
-bool Node::remove(int sumval,Node *parent){
-	bool success = true;
+void Node::remove(int sumval,Node *parent, Node *&root){
 	if (data > sumval){
-		left->remove(sumval, this);
+		left->remove(sumval, this,root);
 	}
 	else if (data < sumval){
-		right->remove(sumval, this);
+		right->remove(sumval, this,root);
 	}
 	else if (data == sumval){
 		if (right == NULL && left == NULL){
@@ -81,34 +80,35 @@ bool Node::remove(int sumval,Node *parent){
 			else if (parent->left == this)
 				parent->left = NULL;
 			else{
-				success = false;
+				root = NULL;
 			}
 			deleteNode();
 			
 		}
 		else if (right && left){
 			data = right->findSuccessor();
-			right->remove(data,this);
+			right->remove(data,this,root);
 		}
 		else if (right){
-			if (parent->right == this){
+			if (parent->right == this)
 				parent->right = right;
-				deleteNode();
-			}
-			else if (parent->left == this){
+			else if (parent->left == this)
 				parent->left = right;
-				deleteNode();
-			}
+			else
+				root = right;
+			deleteNode();
 		}
 		else if (left){
 			if (parent->right == this){
 				parent->right = left;
-				deleteNode();
 			}
 			else if (parent->left == this){
 				parent->left = left;
-				deleteNode();
+
 			}
+			else
+				root = left;
+			deleteNode();
 		}
 		else{
 			std::cout << "something went wrong at the conditions for right and left." << std::endl;
@@ -117,7 +117,6 @@ bool Node::remove(int sumval,Node *parent){
 	else{
 		std::cout << "something went wrong at the comparison part." << std::endl;
 	}
-	return success;
 }
 void Node::clearNodes(){
 	if (left)
@@ -183,10 +182,7 @@ void BST::print_from_value(int sumval){
 }
 void BST::remove(int sumval){
 	if (root){
-		bool rootRemove = root->remove(sumval, root);
-		if (rootRemove == false){
-			root = NULL;
-		}
+		root->remove(sumval, root, root);
 	}
 }
 void BST::clear(){
