@@ -68,31 +68,32 @@ void Node::print_from_value(int sumval){
 }
 void Node::remove(int sumval,Node *parent){
 	if (data > sumval){
-		left->remove(sumval, left);
+		left->remove(sumval, this);
 	}
 	else if (data < sumval){
-		right->remove(sumval, right);
+		right->remove(sumval, this);
 	}
 	else if (data == sumval){
 		if (right == NULL && left == NULL){
-			parent = NULL;
+			if (parent->right == this)
+				parent->right = NULL;
+			else if (parent->left == this)
+				parent->left = NULL;
 			deleteNode();
 			
 		}
 		else if (right && left){
 			data = right->findSuccessor();
-			right->remove(data,right);
+			right->remove(data,this);
 		}
-		else if (right || left){
-			if (right){
-				parent = right;
-				deleteNode();
-			}
-			else if (left){
-				parent = left;
-				deleteNode();
-			}
+		else if (right){
+			parent->right = right;
+			deleteNode();
 		}
+		else if (left){
+			parent->left = left;
+			deleteNode();
+		}		
 		else{
 			std::cout << "something went wrong at the conditions for right and left." << std::endl;
 		}

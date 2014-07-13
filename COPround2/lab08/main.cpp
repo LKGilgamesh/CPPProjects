@@ -29,7 +29,7 @@ void push_to_back(int * nums, int n, int a){
 void test(BST * bst, int * nums, int n, int leaf, int root, int two, int one){
 	static int test_no = 1;
 	int count = 0;
-	int nums_sorted[n];
+	int nums_sorted[6];
 	for (int i = 0; i<n; i++){
 		count += nums[i];
 		nums_sorted[i] = nums[i];
@@ -110,7 +110,7 @@ int main(){
 	BST * bst = new BST();
 	int test1[] = { 6, 4, 5, 2, 8, 10 };
 	test(bst, test1, 6, 10, 6, 4, 5);
-
+	/*
 	BST * bst2 = new BST();
 	int test2[1] = { 5 };
 	test(bst2, test2, 1, 5, 5, 5, 5);
@@ -126,4 +126,5 @@ int main(){
 	BST * bst5 = new BST();
 	int test5[20] = { 20, 18, 16, 14, 12, 10, 8, 6, 4, 2 };
 	test(bst5, test5, 10, 2, 20, 10, 12);
+	*/
 }
