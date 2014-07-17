@@ -4,21 +4,21 @@
 #include <vector>
 using namespace tinyxml2;
 XMLDocument recipeBook;
-std::vector <XMLDocument> Menu;
-void insertRecipes(XMLDocument doc){
-	if (doc.FirstChildElement("recipe"))
-		recipeBook.InsertEndChild(doc.FirstChildElement("recipe"));
-	while (!doc.LastChild()){
-		if (doc.NextSiblingElement("recipe")){
-			recipeBook.InsertEndChild(doc.FirstChildElement("recipe"));
-		}
+void insertRecipes(XMLNode *node){
+	std::string NodeName = node->ToElement()->Name();
+	if (NodeName == "recipe"){
+		recipeBook.InsertEndChild(node);
 	}
+	if (node->NextSibling())
+		insertRecipes(node->NextSibling());
 }
 int main(){
 	XMLDocument newXML;
 	int somestuff;
 	newXML.LoadFile("example.xml");
-	insertRecipes(newXML);
+	XMLNode *rootNode = newXML.FirstChild();
+	std::cout << rootNode->ToElement()->Name();
+	insertRecipes(rootNode);
 	std::cin >> somestuff;
 	return 0;
 }
