@@ -1,46 +1,51 @@
-<recipe>
-	<title>Hippie Pancakes</title>
-	<ingredientlist>
-		<ingredient>
-			<quantity>1</quantity>
-			<unit>C.</unit>
-			<fooditem>unbleached wheat blend flour</fooditem>
-		</ingredient>
-		<ingredient>
-			<quantity>2</quantity>
-			<unit>tsp.</unit>
-			<fooditem>baking powder</fooditem>
-		</ingredient>
-		<ingredient>
-			<quantity>1</quantity>
-			<unit>tsp.</unit>
-			<fooditem>unrefined sugar</fooditem>
-		</ingredient>
-		<ingredient>
-			<quantity>1/4</quantity>
-			<unit>tsp.</unit>
-			<fooditem>coarse kosher salt</fooditem>
-		</ingredient>
-		<ingredient>
-			<quantity>1</quantity>
-			free-range egg
-		</ingredient>
-		<ingredient>
-			<quantity>1 1/4</quantity>
-			<unit>C.</unit>
-			<fooditem>hormone-free milk</fooditem>
-		</ingredient>
-		<ingredient>
-			<quantity>1</quantity>
-			<unit>tsp.</unit>
-			<fooditem>organic vegetable oil</fooditem>
-		</ingredient>
-	</ingredientlist>
-	<preparation>
-		Pre-heat griddle over medium heat. Combine dry ingredients in a
-		<equipment>mixing bowl</equipment>
-		. Stir in egg, milk and oil. Use a large spoon or gravy ladle to transfer pancake batter to the
-		<equipment>griddle</equipment>
-		. Pancakes are ready to flip when large bubbles can be seen on top.
-	</preparation>
-</recipe>
+<cookbook>
+  <recipe>
+	  <title>Hippie Pancakes</title>
+	  <ingredientlist>
+		  <ingredient>
+			  <quantity>1</quantity>
+			  <unit>C.</unit>
+			  <fooditem>unbleached wheat blend flour</fooditem>
+		  </ingredient>
+		  <ingredient>
+			  <quantity>2</quantity>
+			  <unit>tsp.</unit>
+			  <fooditem>baking powder</fooditem>
+		  </ingredient>
+		  <ingredient>
+			  <quantity>1</quantity>
+			  <unit>tsp.</unit>
+			  <fooditem>unrefined sugar</fooditem>
+		  </ingredient>
+		  <ingredient>
+			  <quantity>1/4</quantity>
+			  <unit>tsp.</unit>
+			  <fooditem>coarse kosher salt</fooditem>
+		  </ingredient>
+		  <ingredient>
+			  <quantity>1</quantity>
+			  free-range egg
+		  </ingredient>
+		  <ingredient>
+			  <quantity>1 1/4</quantity>
+			  <unit>C.</unit>
+			  <fooditem>hormone-free milk</fooditem>
+		  </ingredient>
+		  <ingredient>
+			  <quantity>1</quantity>
+			  <unit>tsp.</unit>
+			  <fooditem>organic vegetable oil</fooditem>
+		  </ingredient>
+	  </ingredientlist>
+	  <preparation>
+		  Pre-heat griddle over medium heat. Combine dry ingredients in a
+		  <equipment>mixing bowl</equipment>
+		  . Stir in egg, milk and oil. Use a large spoon or gravy ladle to transfer pancake batter to the
+		  <equipment>griddle</equipment>
+		  . Pancakes are ready to flip when large bubbles can be seen on top.
+	  </preparation>
+  </recipe>
+  <recipe>
+  
+  </recipe>
+</cookbook>
