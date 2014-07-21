@@ -3,24 +3,58 @@
 
 #include <fstream>
 #include <vector>
-class CookBook{
+#include "tinyxml2.h"
+
+using namespace tinyxml2;
+class Cooking{
 private:
-	XMLDocument recipeBook;
+	XMLDocument *recipeBook;
+	XMLDocument *inventorylist;
+	XMLNode* compareNodes(XMLNode *node, XMLNode *current);
+	std::vector <XMLNode*> menu;
+	void addToEquipmentList(XMLNode *node);
+	XMLNode* findEquipment(std::string equipment, XMLNode *node);
+	XMLNode* findItem(std::string ingredient, XMLNode *node);
+	XMLNode *findRecipe(XMLNode *node, std::string RecipeName);
+	XMLDocument *nodeIngredientShoppingList();
+	XMLDocument *nodeEquipmentShoppingList();
+	void CopySubtree(XMLDocument *doc, XMLNode *copyfrom, XMLNode* copytoo, bool firstlayer);
+	void adjustInventoryValues(XMLNode *node, bool enter);
+	void adjustIngredientValues(XMLNode *node);
+	void printIngredientsFromMenu(XMLNode *recipe);
+	void findAllEquipment(XMLNode* node,XMLNode *equipmentlist,XMLDocument *doc);
+	void fileOpenError();
 public:
-	CookBook();
+	Cooking();
 	void insertRecipes(XMLNode *node);
-	void printRecipeBook(XMLNode *node);
-};
-class Inventory{
-public:
-	Inventory();
+	void printRecipe(XMLNode *node);
+	void insertInventoryItem(XMLNode *node);
+	void subtractInventoryItem(XMLNode *node);
+	void addRecipeToMenu(std::string RecipeName);
+	void removeRecipeFromMenu(std::string RecipeName);
+	void increaseIngredient(std::string ingredient, float quantity, std::string unit);
+	void decreaseIngredient(std::string ingredient, float quantity, std::string unit);
+	void insertEquipment(std::string equipment);
+	void deleteEquipment(std::string equipment);
+	void resetMenu();
+	void outputMenu(std::string FileName);
+	void printCurrentMenu();
+	void printEquipment(XMLNode *node);
+	void printRecipe(std::string RecipeName);
+	void printIngredientInventory(XMLNode *node, bool enter);
+	void printIngredientShoppingList();
+	void outputIngredientShoppingList(std::string FileName);
+	void printEquipmentInventory();
+	void printEquipmentList();
+	void printEquipmentShoppingList();
+	void outputEquipmentShoppingList(std::string FileName);
+	void printIngredientList(XMLNode * node,bool enter);
 };
 class Handle{
 private:
 	std::vector <std::string> Menu;
 	void OpenFile(std::string FileName);
-	CookBook cookbook;
-	Inventory inventory;
+	Cooking cooking;
 public:
 	Handle();
 	std::ifstream input;
@@ -29,10 +63,15 @@ public:
 	void inputInventoryFile(std::string FileName);
 	void subtractInventoryFile(std::string Filename);
 	void addRecipe(std::string RecipeName);
-	void increaseInventoryItem(std::string item); //look at this later, doesnt make any sense.
-	void reduceInventoryItem(std::string item); //this too.
-	void insertInventoryItem(std::string item);
-	void deleteInventoryItem(std::string item);
+	void removeRecipe(std::string RecipeName);
+	void resetMenu();
+	void outputMenu(std::string FileName);
+	void printCurrentMenu();
+	void printRecipe(std::string RecipeName);
+	void increaseIngredientItem(std::string item);
+	void reduceIngredientItem(std::string item); 
+	void insertEquipmentItem(std::string item);
+	void deleteEquipmentItem(std::string item);
 	void printIngredientInventory();
 	void printEquipmentInventory();
 	void printIngredientList();
@@ -40,7 +79,7 @@ public:
 	void outputIngredientShoppingList(std::string FileName);
 	void printEquipmentList();
 	void printEquipmentShoppingList();
-	void outputEquipmentShoppingList();
+	void outputEquipmentShoppingList(std::string FileName);
 	void help();
 
 };
