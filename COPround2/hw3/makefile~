@@ -1,0 +1,10 @@
+all:hanoi
+
+hanoi:COP3503su14_HW3_G13.cpp
+	g++ COP3503su14_HW3_G13.cpp -o hanoi
+
+
+clean:
+	rm -rf *.o
+	rm -rf mergesort
+
